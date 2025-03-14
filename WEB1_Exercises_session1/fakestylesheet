@@ -1,0 +1,45 @@
+h1 {text-align: center;}
+body {
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+}
+
+
+.animate-bg {
+    position: relative;
+    z-index: -1;
+}
+
+.animate-bg::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ffb9b9, #afd7ff);
+    animation: changeHue 10s infinite linear;
+}
+@keyframes changeHue{
+    0% {filter: hue-rotate(0deg);}
+    100% {filter: hue-rotate(360deg);}
+}
+.content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+.container {
+    width: 400px;
+    height: 80px;
+    display:grid;
+    align-items: center;
+    grid-template-columns: 2fr 1fr;
+    background-color: aliceblue;
+    border: 5px solid;
+    border-color: red;
+    margin:20px
+}
+.container > p {
+    margin: 5px;
+}
