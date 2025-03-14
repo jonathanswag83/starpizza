@@ -23,7 +23,7 @@ body{
     background-color: white;
     text-align:center;
 }   
-.menu-sublogo{
+#pizzas{
     align-items: center;
     display: grid;
     margin-left: 0;
@@ -51,12 +51,12 @@ body{
 }
 
 
-.menu-sublogo h4{
+#pizzas h4{
     text-align: center;
     display: block;
     margin: auto;
 }
-.menu-sublogo h4 span{
+#pizzas h4 span{
     background-color: rgb(255, 116, 42);
     padding: 1rem;
     border: solid 1rem rgb(255, 116, 42);
@@ -78,16 +78,17 @@ body{
     border-color: rgb(208, 208, 208);
 }
 
-.pizza-properties h1{
+.pizza-name{
     margin: 0px;
+    font-size: 2rem;
+    font-weight: bold;
 }
-.pizza-properties h2{
+.pizza-price{
     margin: 0px;
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     margin-left: 0.1rem;
-    font-size: 1.1rem;
 }
-.pizza-properties h3{
+.pizza-toppings{
     margin: 0px;
     margin-top: 5px;
 }
@@ -119,14 +120,14 @@ body{
     }
 } 
 @media (min-width: 500px) {
-    .menu-sublogo {
+    #pizzas {
         margin-left: 1rem;
         margin-right: 1rem;
     }
 
 }
 @media (min-width: 1000px) {
-    .menu-sublogo {
+    #pizzas {
         margin-left: 1rem;
         margin-right: 1rem;
     }
