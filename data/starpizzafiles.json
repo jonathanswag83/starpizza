@@ -2,7 +2,7 @@
     "pizzas" : [
         {
             "name" : "Margarita",
-            "price" : 7000,
+            "price" : 3817,
             "toppings" : ["Tomato", "Cheese"],
             "images" : {
                 "small_image" : "images/margherita_small.jpg",
@@ -11,7 +11,7 @@
         },
         {
             "name" : "Pepperoni",
-            "price" : 7999,
+            "price" : 4489,
             "toppings" : ["Tomato", "Cheese", "Pepperoni"],
             "images" : {
                 "small_image" : "images/pepperoni_small.jpg",

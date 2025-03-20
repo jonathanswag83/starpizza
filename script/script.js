@@ -16,7 +16,7 @@ fetchData();
 
 function createPizza(pizza, i) {
     return `
-        <div class="pizza-container" onclick="addpizza(${i})">
+        <div class="pizza-container" onclick="addpizza(${i}); updateCheckout();">
             <div class="pizza-properties">
                 <p class="pizza-name">${pizza.name}</p> 
                 <p class="pizza-price">fra <b>${pizza.price} kr</b></p> 
@@ -40,27 +40,52 @@ function createPizzas(data)
     }
 }
 
-const itemdiv = document.getElementById("selected-items")
 
-var counter = [];
+
+const itemdiv = document.getElementById("selected-items")
 
 function addpizza(indice)
 {
-    var amount = document.getElementById("pizza" + indice + "-amount")
+    // method to trim non-numbers found online
+    var price = document.getElementsByClassName("pizza-price")[indice].innerHTML.replace(/\D/g,'');
+    var amount = document.getElementById("pizza" + indice + "-amount");
+    var total = document.getElementById("pizza" + indice +"-total");
+
     if(amount != null)
     {
-        amount.innerHTML = parseInt(amount.innerHTML, 10) + 1;
+        var tempAmount = parseInt(amount.innerHTML.replace(/\D/g,''), 10);
+        /*  it's important to clear the non-numbers each time as "amount: 1" isn't parsable as a number
+        also intuitively, building strings is performance heavy so there is in theory a better way to do this but rn idc */
+        tempAmount += 1;
+        amount.innerHTML = `Amount: ${tempAmount}`;
+        total.innerHTML = `Total: ${tempAmount * price} kr.`;
         return;
+        // early return my beloved
     }
     console.log("hi")
     itemdiv.innerHTML += `
     <div class="item" id="pizza${indice}">
         <p>${document.getElementsByClassName("pizza-name")[indice].innerText}</p>
-        <p id="pizza${indice}-amount">1</p>
-        <p>price: ${document.getElementsByClassName("pizza-price")[indice].innerText.replace(/\D/g,'')}</p> 
+        <p id="pizza${indice}-amount">Amount: 1</p>
+        <p>price: ${price} kr.</p> 
+        <p id="pizza${indice}-total">Total: ${price * 1} kr.</p>
     </div>
     `;
-    // method to trim non-numbers found online
+}
+
+function updateCheckout()
+{
+    let pizzaAmount = document.getElementsByClassName("item");
+    let totalprice = document.getElementById("total-price");
+    var total = 0;
+
+    for (let i = 0; i < pizzaAmount.length; i++)
+    {
+        console.log("a");
+        total += parseInt(document.getElementById("pizza" + i +"-total").innerHTML.replace(/\D/g,''), 10);
+    }
+    
+    totalprice.innerHTML = `check out: ${total} kr.`;
 }
 
 
