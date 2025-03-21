@@ -16,10 +16,10 @@ fetchData();
 
 function createPizza(pizza, i) {
     return `
-        <div class="pizza-container" onclick="addpizza(${i}); updateCheckout();">
+        <div class="pizza-container" onclick="addPizzaToList(${i}); updateCheckout();">
             <div class="pizza-properties">
                 <p class="pizza-name">${pizza.name}</p> 
-                <p class="pizza-price">fra <b>${pizza.price} kr</b></p> 
+                <p class="pizza-price">fra <b><span id="pizza${i}-price">${pizza.price}</span> kr</b></p> 
                 <p class="pizza-toppings">${pizza.toppings}</p>
             </div>
             <a href="${pizza.images.big_image}" target="_blank">
@@ -42,35 +42,63 @@ function createPizzas(data)
 
 
 
-const itemdiv = document.getElementById("selected-items")
+const itemdiv = document.getElementById("selected-items");
 
-function addpizza(indice)
+function addPizzaToList(indice)
 {
     // method to trim non-numbers found online
-    var price = document.getElementsByClassName("pizza-price")[indice].innerHTML.replace(/\D/g,'');
+    var price = document.getElementById("pizza" + indice + "-price").innerHTML;
     var amount = document.getElementById("pizza" + indice + "-amount");
     var total = document.getElementById("pizza" + indice +"-total");
 
     if(amount != null)
     {
-        var tempAmount = parseInt(amount.innerHTML.replace(/\D/g,''), 10);
+        var tempAmount = parseInt(amount.innerHTML);
         /*  it's important to clear the non-numbers each time as "amount: 1" isn't parsable as a number
         also intuitively, building strings is performance heavy so there is in theory a better way to do this but rn idc */
+        //EDIT: Fixed by putting amount into its own tag, in this case, span
         tempAmount += 1;
-        amount.innerHTML = `Amount: ${tempAmount}`;
-        total.innerHTML = `Total: ${tempAmount * price} kr.`;
+        amount.innerHTML = tempAmount;
+        total.innerHTML = tempAmount * price;
         return;
         // early return my beloved
     }
     console.log("hi")
     itemdiv.innerHTML += `
-    <div class="item" id="pizza${indice}">
+    <div class="item" id="pizza${indice}" onclick:"updateCheckout(); onclick="removePizza(${indice});">
         <p>${document.getElementsByClassName("pizza-name")[indice].innerText}</p>
-        <p id="pizza${indice}-amount">Amount: 1</p>
-        <p>price: ${price} kr.</p> 
-        <p id="pizza${indice}-total">Total: ${price * 1} kr.</p>
+        <p>Amount: <span id="pizza${indice}-amount">1</span></p>
+        <p>price: <span id=pizza${indice}-price>${price}</span> kr.</p> 
+        <p>Total: <span id="pizza${indice}-total">${price}</span> kr.</p>
     </div>
     `;
+}
+
+function removePizza(indice)
+{
+
+    var price = document.getElementById("pizza" + indice + "-price").innerHTML;
+    var amount = document.getElementById("pizza" + indice + "-amount");
+    var total = document.getElementById("pizza" + indice +"-total");
+    
+    var singleDeletion = document.getElementById(`pizza${indice}-amount`)
+    console.log(singleDeletion.innerHTML);
+    if (singleDeletion.innerHTML == 1)
+    {
+        let pizza = document.getElementById("pizza" + indice)
+        pizza.remove();
+    }
+    else
+    {
+        //could rework this into an "updatePizza()" function
+        var tempAmount = parseInt(amount.innerHTML);
+        tempAmount -= 1;
+        amount.innerHTML = tempAmount;
+        total.innerHTML = tempAmount * price;
+    }
+    updateCheckout();
+
+
 }
 
 function updateCheckout()
@@ -81,11 +109,12 @@ function updateCheckout()
 
     for (let i = 0; i < pizzaAmount.length; i++)
     {
-        console.log("a");
-        total += parseInt(document.getElementById("pizza" + i +"-total").innerHTML.replace(/\D/g,''), 10);
+        var id = pizzaAmount[i].id.replace("pizza", "").replace("-total", ""); // idk why this works
+        total += parseInt(document.getElementById("pizza" + id + "-total").innerHTML);
     }
     
     totalprice.innerHTML = `check out: ${total} kr.`;
 }
+
 
 
