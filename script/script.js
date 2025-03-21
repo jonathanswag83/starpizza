@@ -46,26 +46,17 @@ const itemdiv = document.getElementById("selected-items");
 
 function addPizzaToList(indice)
 {
-    // method to trim non-numbers found online
-    var price = document.getElementById("pizza" + indice + "-price").innerHTML;
-    var amount = document.getElementById("pizza" + indice + "-amount");
-    var total = document.getElementById("pizza" + indice +"-total");
-
+    let amount = document.getElementById("pizza" + indice + "-amount");
+    let price = document.getElementById("pizza" + indice + "-price").innerHTML;
     if(amount != null)
     {
-        var tempAmount = parseInt(amount.innerHTML);
-        /*  it's important to clear the non-numbers each time as "amount: 1" isn't parsable as a number
-        also intuitively, building strings is performance heavy so there is in theory a better way to do this but rn idc */
-        //EDIT: Fixed by putting amount into its own tag, in this case, span
-        tempAmount += 1;
-        amount.innerHTML = tempAmount;
-        total.innerHTML = tempAmount * price;
+        updatePizzaInList(indice, true);
         return;
         // early return my beloved
     }
     console.log("hi")
     itemdiv.innerHTML += `
-    <div class="item" id="pizza${indice}" onclick:"updateCheckout(); onclick="removePizza(${indice});">
+    <div class="item" id="pizza${indice}" onclick="removePizza(${indice}); updateCheckout();">
         <p>${document.getElementsByClassName("pizza-name")[indice].innerText}</p>
         <p>Amount: <span id="pizza${indice}-amount">1</span></p>
         <p>price: <span id=pizza${indice}-price>${price}</span> kr.</p> 
@@ -76,28 +67,50 @@ function addPizzaToList(indice)
 
 function removePizza(indice)
 {
-
-    var price = document.getElementById("pizza" + indice + "-price").innerHTML;
-    var amount = document.getElementById("pizza" + indice + "-amount");
-    var total = document.getElementById("pizza" + indice +"-total");
     
-    var singleDeletion = document.getElementById(`pizza${indice}-amount`)
-    console.log(singleDeletion.innerHTML);
-    if (singleDeletion.innerHTML == 1)
+    let singleDeletion = document.getElementById(`pizza${indice}-amount`).innerHTML
+    let pizza = document.getElementById("pizza" + indice)
+    
+    // return (singleDeletion == 1 ? pizza.remove() : updatePizzaInList(indice, false))
+    // shorthand of below, learning how ternary operators work. it works and its fancy but i think its too hard to read
+    if (singleDeletion == 1)
     {
-        let pizza = document.getElementById("pizza" + indice)
-        pizza.remove();
+        // using == instead of === because literal check would require me to 
+        // compare against string "1" and i feel == gives me more freedom
+        return pizza.remove();
+    }
+    updatePizzaInList(indice, false);
+}
+
+function updatePizzaInList(indice, increment)
+{
+    console.log("updated");
+    let price = document.getElementById("pizza" + indice + "-price").innerHTML;
+    let amount = document.getElementById("pizza" + indice + "-amount");
+    let total = document.getElementById("pizza" + indice + "-total");
+
+    let tempAmount = parseInt(amount.innerHTML);
+    /*  it's important to clear the non-numbers each time as "amount: 1" isn't parsable as a number
+    also intuitively, building strings is performance heavy so there is in theory a better way to do this but rn idc */
+    //EDIT: Fixed by putting amount into its own tag, in this case, span
+
+    /*
+    if (increment)
+    {
+        tempAmount += 1;
     }
     else
     {
-        //could rework this into an "updatePizza()" function
-        var tempAmount = parseInt(amount.innerHTML);
         tempAmount -= 1;
-        amount.innerHTML = tempAmount;
-        total.innerHTML = tempAmount * price;
     }
-    updateCheckout();
+    */
+    //shorthand of statement above
 
+    // i tried to get amount.innerHTML and total.innerHTML to be defined as such in the start of this function and then just
+    // write amount = tempAmount; and total = tempAmount * price; here, but that doesnt work for some reason, must be smth abt types
+    tempAmount += (increment ? 1 : -1)
+    amount.innerHTML = tempAmount;
+    total.innerHTML = tempAmount * price;
 
 }
 
@@ -105,11 +118,11 @@ function updateCheckout()
 {
     let pizzaAmount = document.getElementsByClassName("item");
     let totalprice = document.getElementById("total-price");
-    var total = 0;
+    let total = 0;
 
     for (let i = 0; i < pizzaAmount.length; i++)
     {
-        var id = pizzaAmount[i].id.replace("pizza", "").replace("-total", ""); // idk why this works
+        let id = pizzaAmount[i].id.match(/\d+/)[0]; //method to find number found online
         total += parseInt(document.getElementById("pizza" + id + "-total").innerHTML);
     }
     
