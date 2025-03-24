@@ -17,6 +17,34 @@
                 "small_image" : "images/pepperoni_small.jpg",
                 "big_image" : "images/pepperoni_big.jpg"
             }
+        },
+        {
+            "name" : "Hawaii",
+            "price" : 20,
+            "toppings" : ["Tomato", "Cheese", "Ham", "Pineapple"],
+            "images" : {
+                "small_image" : "images/hawaiian_small.jpg",
+                "big_image" : "images/hawaiian_big.jpg"
+            }
+        },
+        {
+            "name" : "veggie lover",
+            "price" : 20,
+            "toppings" : ["Tomato", "Cheese", "Ham", "Pineapple"],
+            "images" : {
+                "small_image" : "images/veggie_lovers_small.jpg",
+                "big_image" : "images/veggie_lovers_big.jpg"
+            }
+        },
+        {
+            "name" : "supreme",
+            "price" : 9999,
+            "toppings" : ["Tomato", "Cheese", "Supreme..."],
+            "images" : {
+                "small_image" : "images/supreme_small.jpg",
+                "big_image" : "images/supreme_big.jpg"
+            }
         }
+        
     ]
 }
